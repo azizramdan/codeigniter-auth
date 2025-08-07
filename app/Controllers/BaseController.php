@@ -6,6 +6,7 @@ use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -54,5 +55,50 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = service('session');
+    }
+
+   protected function success(array|object|null $data = null, string $message = 'Success!', string $code = 'SUCCESS', int $httpStatus = Response::HTTP_OK)
+    {
+        $response = [
+            'code' => $code,
+            'message' => $message,
+            'data' => $data,
+        ];
+
+        return $this->response->setJSON($response)->setStatusCode($httpStatus);
+    }
+
+    protected function fail(array|object|null $data = null, string $message = 'Failed!', string $code = 'FAIL', int $httpStatus = Response::HTTP_BAD_REQUEST)
+    {
+        $response = [
+            'code' => $code,
+            'message' => $message,
+            'data' => $data,
+        ];
+
+        return $this->response->setJSON($response)->setStatusCode($httpStatus);
+    }
+
+    /**
+     * A shortcut to performing validation on Request data.
+     *
+     * @param array|string $rules
+     * @param array        $messages An array of custom error messages
+     */
+    protected function validateRequest($rules, array $messages = [])
+    {
+        if (!$this->validate($rules, $messages)) {
+            return [
+                false,
+                $this->fail(
+                    $this->validator->getErrors(),
+                    'Validation Failed',
+                    'VALIDATION_FAILED',
+                    ResponseInterface::HTTP_UNPROCESSABLE_ENTITY
+                )
+            ];
+        }
+
+        return [true, $this->validator->getValidated()];
     }
 }
