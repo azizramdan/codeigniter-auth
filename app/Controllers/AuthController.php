@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Pegawai;
 use CodeIgniter\HTTP\Response;
+use CodeIgniter\Shield\Entities\User;
 
 class AuthController extends BaseController
 {
@@ -18,44 +20,55 @@ class AuthController extends BaseController
             return $data;
         }
 
-        if (auth()->loggedIn()) {
-            auth()->logout();
+        // username-password login need session authenticator
+        $authService = auth('session');
+
+        if ($authService->loggedIn()) {
+            $authService->logout();
         }
 
-        $result = auth()->attempt($data);
+        $result = $authService->attempt($data);
 
          if (! $result->isOK()) {
             return $this->fail(message: 'Username atau password salah', httpStatus: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $user = auth()->user();
+        $user = $authService->user();
 
         $token = $user->generateAccessToken('login');
 
         return $this->success([
             'token' => $token->raw_token,
-            'user' => $user,
+            'user' => $this->selectUserColumns($user),
         ]);
     }
 
     public function me()
     {
-        return $this->success(auth()->user());
+        return $this->success($this->selectUserColumns(auth()->user()));
+    }
+
+    private function selectUserColumns(User $user)
+    {
+        $pegawai = $user->nip
+            ? new Pegawai()
+                ->select('nip, nama')
+                ->where('nip', $user->nip)
+                ->first()
+            : null;
+
+        return [
+            'id' => $user->id,
+            'username' => $user->username,
+            'name' => $user->name,
+            'nip' => $user->nip,
+            'pegawai' => $pegawai,
+        ];
     }
 
     public function logout()
     {
-        $user = auth()->user();
-    
-        $header = $this->request->getHeaderLine('Authorization');
-        $token = null;
-        if (preg_match('/Bearer\s(\S+)/', $header, $matches)) {
-            $token = $matches[1];
-        }
-
-        if ($token) {
-            $user->revokeAccessToken($token);
-        }
+        auth()->user()->revokeAccessToken(auth()->getBearerToken());
         
         auth()->logout();
 
