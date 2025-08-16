@@ -120,8 +120,8 @@ class Auth extends ShieldAuth
      */
     public array $authenticators = [
         'tokens'  => AccessTokens::class,
-        'session' => Session::class,
-        'hmac'    => HmacSha256::class,
+        // 'session' => Session::class,
+        // 'hmac'    => HmacSha256::class,
         // 'jwt'     => JWT::class,
     ];
 
@@ -132,7 +132,7 @@ class Auth extends ShieldAuth
      * The Authenticator to use when none is specified.
      * Uses the $key from the $authenticators array above.
      */
-    public string $defaultAuthenticator = 'session';
+    public string $defaultAuthenticator = 'tokens';
 
     /**
      * --------------------------------------------------------------------
