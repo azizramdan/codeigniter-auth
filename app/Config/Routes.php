@@ -1,12 +1,13 @@
 <?php
 
 use App\Controllers\AuthController;
+use App\Controllers\Home;
 use CodeIgniter\Router\RouteCollection;
 
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+$routes->get('/', [Home::class, 'index']);
 
 $routes->post('login', [AuthController::class, 'login']);
 
