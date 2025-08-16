@@ -54,11 +54,21 @@ class AuthController extends BaseController
                 ->first()
             : null;
 
+        $userGroups = $user->getGroups();
+        $matrix = setting('AuthGroups.matrix');
+        $groupLevelPermissions = [];
+
+        foreach ($userGroups as $group) {
+            $groupLevelPermissions = array_merge($groupLevelPermissions, $matrix[$group] ?? []);
+        }
+
         return [
             'id' => $user->id,
             'username' => $user->username,
             'name' => $user->name,
             'nip' => $user->nip,
+            'groups' => $userGroups,
+            'permissions' => array_merge($groupLevelPermissions, $user->getPermissions()),
             'pegawai' => $pegawai,
         ];
     }
