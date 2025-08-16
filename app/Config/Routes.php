@@ -10,7 +10,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', [Home::class, 'index']);
 $routes->get('403', [Home::class, 'http403']);
 
-$routes->post('login', [AuthController::class, 'login']);
+$routes->post('login', [AuthController::class, 'login'], ['filter' => 'session']);
 
 $routes->group('', ['filter' => 'tokens'], function (RouteCollection $routes) {
     $routes->get('me', [AuthController::class, 'me']);
