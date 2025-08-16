@@ -120,7 +120,7 @@ class Auth extends ShieldAuth
      */
     public array $authenticators = [
         'tokens'  => AccessTokens::class,
-        // 'session' => Session::class,
+        'session' => Session::class,
         // 'hmac'    => HmacSha256::class,
         // 'jwt'     => JWT::class,
     ];
