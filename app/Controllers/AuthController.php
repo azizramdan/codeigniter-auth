@@ -20,17 +20,20 @@ class AuthController extends BaseController
             return $data;
         }
 
-        if (auth()->loggedIn()) {
-            auth()->logout();
+        // username-password login need session authenticator
+        $authService = auth('session');
+
+        if ($authService->loggedIn()) {
+            $authService->logout();
         }
 
-        $result = auth()->attempt($data);
+        $result = $authService->attempt($data);
 
          if (! $result->isOK()) {
             return $this->fail(message: 'Username atau password salah', httpStatus: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $user = auth()->user();
+        $user = $authService->user();
 
         $token = $user->generateAccessToken('login');
 
