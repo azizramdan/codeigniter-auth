@@ -15,4 +15,11 @@ class Home extends BaseController
     {
         return $this->fail(code: 'NOT_FOUND', message: 'Not Found', httpStatus: Response::HTTP_NOT_FOUND);
     }
+
+    public function ok()
+    {
+        return $this->success([
+            'ok' => 'Hello World!',
+        ]);
+    }
 }

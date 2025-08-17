@@ -17,7 +17,7 @@ $routes->group('', ['filter' => 'tokens'], function (RouteCollection $routes) {
         $routes->post('logout', [AuthController::class, 'logout']);
     });
     
-    $routes->get('superadmin-only', fn () => response()->setJSON(['message' => 'OK GRANTED!']), ['filter' => 'group:superadmin']);
-    $routes->get('user-only', fn () => response()->setJSON(['message' => 'OK GRANTED!']), ['filter' => 'group:user']);
-    $routes->get('permitted-permissions', fn () => response()->setJSON(['message' => 'OK GRANTED!']), ['filter' => 'permission:module.admin-feature']);
+    $routes->get('superadmin-only', [Home::class, 'ok'], ['filter' => 'group:superadmin']);
+    $routes->get('user-only', [Home::class, 'ok'], ['filter' => 'group:user']);
+    $routes->get('permitted-permissions', [Home::class, 'ok'], ['filter' => 'permission:module.admin-feature']);
 });
