@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Filters\GroupFilter;
+use App\Filters\PermissionFilter;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
 use CodeIgniter\HotReloader\HotReloader;
@@ -52,4 +54,7 @@ Events::on('pre_system', static function (): void {
             });
         }
     }
+
+    config('Filters')->aliases['group'] = GroupFilter::class;
+    config('Filters')->aliases['permission'] = PermissionFilter::class;
 });
