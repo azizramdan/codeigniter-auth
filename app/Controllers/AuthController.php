@@ -76,6 +76,35 @@ class AuthController extends BaseController
         ];
     }
 
+    public function changePassword()
+    {
+        [$isValid, $data] = $this->validateRequest([
+            'password_old' => ['required', 'string'],
+            'password_new' => ['required', 'string'],
+        ]);
+
+        if (!$isValid) {
+            return $data;
+        }
+
+        $user = auth()->user();
+
+        $authService = auth('session');
+        $isOldPasswordValid = $authService->attempt([
+            'username' => $user->username,
+            'password' => $data['password_old']
+        ]);
+
+        if (! $isOldPasswordValid->isOK()) {
+            return $this->fail(message: 'Old password is not valid', httpStatus: Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $user->setPassword($data['password_new']);
+        $user->saveEmailIdentity();
+
+        return $this->success();
+    }
+
     public function logout()
     {
         auth()->user()->revokeAccessToken(auth()->getBearerToken());

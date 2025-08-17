@@ -14,6 +14,7 @@ $routes->post('auth/login', [AuthController::class, 'login']);
 $routes->group('', ['filter' => 'tokens'], function (RouteCollection $routes) {
     $routes->group('auth', function (RouteCollection $routes) {
         $routes->get('me', [AuthController::class, 'me']);
+        $routes->post('change-password', [AuthController::class, 'changePassword']);
         $routes->post('logout', [AuthController::class, 'logout']);
     });
     
