@@ -8,7 +8,6 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', [Home::class, 'index']);
-$routes->get('403', [Home::class, 'http403']);
 
 $routes->post('auth/login', [AuthController::class, 'login']);
 

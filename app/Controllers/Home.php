@@ -15,9 +15,4 @@ class Home extends BaseController
     {
         return $this->fail(code: 'NOT_FOUND', message: 'Not Found', httpStatus: Response::HTTP_NOT_FOUND);
     }
-
-    public function http403()
-    {
-        return $this->fail(code: 'FORBIDDEN', message: 'Forbidden', httpStatus: Response::HTTP_FORBIDDEN);
-    }
 }
