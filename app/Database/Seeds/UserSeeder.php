@@ -13,12 +13,12 @@ class UserSeeder extends Seeder
     {
         $this->db->transStart();
 
-        $userModel = new UserModel;
-        
+        $userModel = new UserModel();
+
         $userModel->save(new User([
             'username' => 'superadmin',
-            'email' => 'superadmin',
-            'name' => 'Super Admin',
+            'email'    => 'superadmin',
+            'name'     => 'Super Admin',
             'password' => 'dev',
         ]));
 
@@ -26,16 +26,16 @@ class UserSeeder extends Seeder
 
         $nip = '123456789012345678';
 
-        new Pegawai()->save([
-            'nip' => $nip,
+        (new Pegawai())->save([
+            'nip'  => $nip,
             'nama' => 'Pegawai 1',
         ]);
-        
+
         $userModel->save(new User([
             'username' => $nip,
-            'email' => $nip,
-            'name' => 'Pegawai 1',
-            'nip' => $nip,
+            'email'    => $nip,
+            'name'     => 'Pegawai 1',
+            'nip'      => $nip,
             'password' => 'dev',
         ]));
 

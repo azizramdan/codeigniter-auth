@@ -17,9 +17,9 @@ class GroupFilter extends FiltersGroupFilter
         if (! auth()->loggedIn()) {
             return response()
                 ->setJSON([
-                    'code' => 'UNAUTHORIZED',
+                    'code'    => 'UNAUTHORIZED',
                     'message' => 'Unauthorized',
-                    'data' => null,
+                    'data'    => null,
                 ])
                 ->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
@@ -30,9 +30,9 @@ class GroupFilter extends FiltersGroupFilter
 
         return response()
             ->setJSON([
-                'code' => 'FORBIDDEN',
+                'code'    => 'FORBIDDEN',
                 'message' => 'Forbidden',
-                'data' => null,
+                'data'    => null,
             ])
             ->setStatusCode(Response::HTTP_FORBIDDEN);
     }

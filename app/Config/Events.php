@@ -55,6 +55,6 @@ Events::on('pre_system', static function (): void {
         }
     }
 
-    config('Filters')->aliases['group'] = GroupFilter::class;
+    config('Filters')->aliases['group']      = GroupFilter::class;
     config('Filters')->aliases['permission'] = PermissionFilter::class;
 });

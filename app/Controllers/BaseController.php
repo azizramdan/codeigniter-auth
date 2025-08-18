@@ -57,12 +57,12 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = service('session');
     }
 
-   protected function success(array|object|null $data = null, string $message = 'Success!', string $code = 'SUCCESS', int $httpStatus = Response::HTTP_OK)
+    protected function success(array|object|null $data = null, string $message = 'Success!', string $code = 'SUCCESS', int $httpStatus = Response::HTTP_OK)
     {
         $response = [
-            'code' => $code,
+            'code'    => $code,
             'message' => $message,
-            'data' => $data,
+            'data'    => $data,
         ];
 
         return $this->response->setJSON($response)->setStatusCode($httpStatus);
@@ -71,9 +71,9 @@ abstract class BaseController extends Controller
     protected function fail(array|object|null $data = null, string $message = 'Failed!', string $code = 'FAIL', int $httpStatus = Response::HTTP_BAD_REQUEST)
     {
         $response = [
-            'code' => $code,
+            'code'    => $code,
             'message' => $message,
-            'data' => $data,
+            'data'    => $data,
         ];
 
         return $this->response->setJSON($response)->setStatusCode($httpStatus);
@@ -87,15 +87,15 @@ abstract class BaseController extends Controller
      */
     protected function validateRequest($rules, array $messages = [])
     {
-        if (!$this->validate($rules, $messages)) {
+        if (! $this->validate($rules, $messages)) {
             return [
                 false,
                 $this->fail(
                     $this->validator->getErrors(),
                     'Validation Failed',
                     'VALIDATION_FAILED',
-                    ResponseInterface::HTTP_UNPROCESSABLE_ENTITY
-                )
+                    ResponseInterface::HTTP_UNPROCESSABLE_ENTITY,
+                ),
             ];
         }
 

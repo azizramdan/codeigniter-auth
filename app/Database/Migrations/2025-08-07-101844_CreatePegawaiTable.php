@@ -10,12 +10,11 @@ class CreatePegawaiTable extends Migration
     {
         $this->forge->addField([
             'nip' => [
-                'type' => 'VARCHAR',
+                'type'       => 'VARCHAR',
                 'constraint' => 18,
-
             ],
             'nama' => [
-                'type' => 'VARCHAR',
+                'type'       => 'VARCHAR',
                 'constraint' => 100,
             ],
         ]);

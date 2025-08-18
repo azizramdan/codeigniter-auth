@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\Pegawai;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\Shield\Entities\User;
@@ -16,7 +15,7 @@ class AuthController extends BaseController
             'password' => ['required', 'string'],
         ]);
 
-        if (!$isValid) {
+        if (! $isValid) {
             return $data;
         }
 
@@ -29,7 +28,7 @@ class AuthController extends BaseController
 
         $result = $authService->attempt($data);
 
-         if (! $result->isOK()) {
+        if (! $result->isOK()) {
             return $this->fail(message: 'Username atau password salah', httpStatus: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -39,7 +38,7 @@ class AuthController extends BaseController
 
         return $this->success([
             'token' => $token->raw_token,
-            'user' => $this->selectUserColumns($user),
+            'user'  => $this->selectUserColumns($user),
         ]);
     }
 
@@ -51,14 +50,14 @@ class AuthController extends BaseController
     private function selectUserColumns(User $user)
     {
         $pegawai = $user->nip
-            ? new Pegawai()
+            ? (new Pegawai())
                 ->select('nip, nama')
                 ->where('nip', $user->nip)
                 ->first()
             : null;
 
-        $userGroups = $user->getGroups();
-        $matrix = setting('AuthGroups.matrix');
+        $userGroups            = $user->getGroups();
+        $matrix                = setting('AuthGroups.matrix');
         $groupLevelPermissions = [];
 
         foreach ($userGroups as $group) {
@@ -66,13 +65,13 @@ class AuthController extends BaseController
         }
 
         return [
-            'id' => $user->id,
-            'username' => $user->username,
-            'name' => $user->name,
-            'nip' => $user->nip,
-            'groups' => $userGroups,
+            'id'          => $user->id,
+            'username'    => $user->username,
+            'name'        => $user->name,
+            'nip'         => $user->nip,
+            'groups'      => $userGroups,
             'permissions' => array_merge($groupLevelPermissions, $user->getPermissions()),
-            'pegawai' => $pegawai,
+            'pegawai'     => $pegawai,
         ];
     }
 
@@ -83,16 +82,16 @@ class AuthController extends BaseController
             'password_new' => ['required', 'string'],
         ]);
 
-        if (!$isValid) {
+        if (! $isValid) {
             return $data;
         }
 
         $user = auth()->user();
 
-        $authService = auth('session');
+        $authService        = auth('session');
         $isOldPasswordValid = $authService->attempt([
             'username' => $user->username,
-            'password' => $data['password_old']
+            'password' => $data['password_old'],
         ]);
 
         if (! $isOldPasswordValid->isOK()) {
@@ -108,7 +107,7 @@ class AuthController extends BaseController
     public function logout()
     {
         auth()->user()->revokeAccessToken(auth()->getBearerToken());
-        
+
         auth()->logout();
 
         return $this->success();

@@ -60,7 +60,7 @@ class AuthGroups extends ShieldAuthGroups
      * If a permission is not listed here it cannot be used.
      */
     public array $permissions = [
-        'module.admin-feature'        => 'Can access <admin-feature> in <module> module',
+        'module.admin-feature' => 'Can access <admin-feature> in <module> module',
     ];
 
     /**
