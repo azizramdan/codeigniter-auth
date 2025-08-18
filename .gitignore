@@ -121,3 +121,4 @@ _modules/*
 
 /results/
 /phpunit*.xml
+.php-cs-fixer.cache

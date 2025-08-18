@@ -6,6 +6,14 @@ A minimal starter backend for secure token-based API authentication using CodeIg
 - CodeIgniter Shield
 - PHP 8.4
 
+## Code style
+
+The code uses [CodeIgniter Coding Standard](https://github.com/CodeIgniter/coding-standard). Make sure to run it before committing to git.
+
+```bash
+./vendor/bin/php-cs-fixer fix
+```
+
 ## Run project
 
 ```bash
